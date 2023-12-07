@@ -1,12 +1,11 @@
 import db from '../../firebase/index';
 import { getDocs, collection, getDoc, doc } from 'firebase/firestore/lite';
 import { Article } from '../../styles/articleStyles';
-import { Container } from '../../styles/globalStyles';
 import parse from 'html-react-parser';
 import moment from 'moment';
-import { motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import Footer from '../../components/footer';
+import Image from 'next/image'
 
 const Post = ({ article }) => {
   const { articleTitle, articleImage, articleContent, dateCreated } = article;
@@ -60,7 +59,7 @@ const Post = ({ article }) => {
 
         <div className="imagecontainer">
           <div className="image">
-            <img
+            <Image
               src={articleImage}
               alt=""
               style={{ width: '100%', backgroundPosition: 'fixed' }}

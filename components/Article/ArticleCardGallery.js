@@ -6,6 +6,8 @@ import {
 } from "../../styles/articleCardGalleryStyles";
 import Link from "next/link";
 import moment from "moment";
+import Image from 'next/image'
+
 
 
 const ArticleCardGallery = ({ articles }) => {
@@ -24,7 +26,7 @@ const ArticleCardGallery = ({ articles }) => {
                     [{`${value}`}] {articleTitle}
                   </h6>
                   <div className="lazymedia">
-                    <img src={articleImage} alt="testing" />
+                    <Image src={articleImage} alt="testing" />
                     <div className="placeholder"></div>
                   </div>
                 </div>
