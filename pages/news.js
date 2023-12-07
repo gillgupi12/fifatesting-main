@@ -9,7 +9,6 @@ import { EmptySpace } from '../styles/globalStyles';
 import PageHeading from '../components/Heading/Heading';
 import { motion } from 'framer-motion';
 
-
 export const getStaticProps = async (context) => {
   const first = query(collection(db, 'articles'), orderBy('dateCreated', 'desc'))
   const querySelector = await getDocs(first);
@@ -29,14 +28,13 @@ export const getStaticProps = async (context) => {
 
 const News = ({ allArticles }) => {
   const [width, setWidth] = useState();
-  let sliderWidth;
-  let imageWidth;
-  let ease = 0.075;
-  let current = 0;
-  let target = 0;
+  const sliderWidth = useRef();
+  const imageWidth = useRef();
+  const ease = 0.075;
+  const current = useRef(0);
+  const target = useRef(0);
   const sliderRef = useRef();
   const imagesRef = useRef([]);
- 
 
   function lerp(start, end, t) {
     return start * (1 - t) + end * t;
@@ -50,29 +48,29 @@ const News = ({ allArticles }) => {
     function init() {
       setWidth(window.innerWidth);
       if (sliderRef && sliderRef.current) {
-        sliderWidth = sliderRef.current.getBoundingClientRect().width;
-        imageWidth = sliderWidth / 7;
+        sliderWidth.current = sliderRef.current.getBoundingClientRect().width;
+        imageWidth.current = sliderWidth.current / 7;
         document.body.style.height = `${
-          sliderWidth - (window.innerWidth - window.innerHeight)
+          sliderWidth.current - (window.innerWidth - window.innerHeight)
         }px`;
 
         animate();
       } else {
-        sliderWidth = '';
+        sliderWidth.current = '';
         return;
       }
     }
 
     function animate() {
-      current = parseFloat(lerp(current, target, ease)).toFixed(2);
-      target = window.scrollY;
-      setTransform(sliderRef.current, `translateX(-${current}px)`);
+      current.current = parseFloat(lerp(current.current, target.current, ease)).toFixed(2);
+      target.current = window.scrollY;
+      setTransform(sliderRef.current, `translateX(-${current.current}px)`);
       animateImages();
       requestAnimationFrame(() => animate());
     }
 
     function animateImages() {
-      let ratio = current / imageWidth;
+      let ratio = current.current / imageWidth.current;
       let intersectionRatioValue;
       imagesRef.current.forEach((image, index) => {
         intersectionRatioValue = ratio - index * 0.5;
